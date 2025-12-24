@@ -55,6 +55,6 @@ const opnePositions = [
     type: 'Hybird',
     location: 'Rabat, Morocco',
     department: 'Marketing',
-    link: '/carrers/marketing',
+    link: '/careers/marketing',
   },
 ]

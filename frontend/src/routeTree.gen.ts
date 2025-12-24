@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
+import { Route as AdminAuthedRouteImport } from './routes/admin/_authed'
+import { Route as AdminAuthedDashboardRouteImport } from './routes/admin/_authed/dashboard'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,33 +31,78 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
   path: '/careers/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAuthedRoute = AdminAuthedRouteImport.update({
+  id: '/admin/_authed',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAuthedDashboardRoute = AdminAuthedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminAuthedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminAuthedRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers': typeof CareersIndexRoute
+  '/admin/dashboard': typeof AdminAuthedDashboardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminAuthedRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers': typeof CareersIndexRoute
+  '/admin/dashboard': typeof AdminAuthedDashboardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin/_authed': typeof AdminAuthedRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers/': typeof CareersIndexRoute
+  '/admin/_authed/dashboard': typeof AdminAuthedDashboardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/careers/$slug' | '/careers'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/admin/login'
+    | '/careers/$slug'
+    | '/careers'
+    | '/admin/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/careers/$slug' | '/careers'
-  id: '__root__' | '/' | '/careers/$slug' | '/careers/'
+  to:
+    | '/'
+    | '/admin'
+    | '/admin/login'
+    | '/careers/$slug'
+    | '/careers'
+    | '/admin/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin/_authed'
+    | '/admin/login'
+    | '/careers/$slug'
+    | '/careers/'
+    | '/admin/_authed/dashboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminAuthedRoute: typeof AdminAuthedRouteWithChildren
+  AdminLoginRoute: typeof AdminLoginRoute
   CareersSlugRoute: typeof CareersSlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
 }
@@ -82,11 +130,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/_authed': {
+      id: '/admin/_authed'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminAuthedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/_authed/dashboard': {
+      id: '/admin/_authed/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminAuthedDashboardRouteImport
+      parentRoute: typeof AdminAuthedRoute
+    }
   }
 }
 
+interface AdminAuthedRouteChildren {
+  AdminAuthedDashboardRoute: typeof AdminAuthedDashboardRoute
+}
+
+const AdminAuthedRouteChildren: AdminAuthedRouteChildren = {
+  AdminAuthedDashboardRoute: AdminAuthedDashboardRoute,
+}
+
+const AdminAuthedRouteWithChildren = AdminAuthedRoute._addFileChildren(
+  AdminAuthedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminAuthedRoute: AdminAuthedRouteWithChildren,
+  AdminLoginRoute: AdminLoginRoute,
   CareersSlugRoute: CareersSlugRoute,
   CareersIndexRoute: CareersIndexRoute,
 }

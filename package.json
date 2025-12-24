@@ -1,0 +1,8 @@
+{
+  "name": "job-platform",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}

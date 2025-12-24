@@ -1,0 +1,16 @@
+{
+  "include": ["**/*.ts"],
+  
+  "compilerOptions": {
+    "esModuleInterop": true,
+    
+    "skipLibCheck": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}

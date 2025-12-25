@@ -16,7 +16,7 @@ npm run dev -w frontend
   - **Jobs** – CRUD operations for job postings.
   - **Applicants** – Manage applicants for jobs.
   - **Auth** – Sign-up, login, user management.
-- Owns and manages the **database** with Prisma.
+- Owns and manages the **database** with Drizzle ORM.
 - **Database commands** (run inside `backend` folder):
   ```bash
   cd ./backend
